@@ -1,0 +1,5 @@
+.env.local
+PROGRESS.md
+guidelines.md
+.next/
+node_modules/
