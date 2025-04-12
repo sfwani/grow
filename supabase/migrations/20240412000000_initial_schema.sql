@@ -73,18 +73,18 @@ INSERT INTO users (username, email, avatar_url) VALUES
 
 -- Insert sample plants
 INSERT INTO plants (name, category, growth_time, sunlight, water, difficulty, image_url, description) VALUES
-('Tomato', 'Food', '2 weeks', 'Full Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400', 'Easy to grow and versatile vegetable, rich in vitamins.'),
-('Aloe Vera', 'Medicinal', '3 weeks', 'Partial Sun', 'Weekly', 'Easy', 'https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?w=400', 'Excellent for burns and skin care.'),
-('Lavender', 'Utility', '4 weeks', 'Full Sun', 'Bi-weekly', 'Medium', 'https://images.unsplash.com/photo-1498745277243-1ab742c0f93c?w=400', 'Aromatic herb with calming properties.'),
-('Chamomile', 'Medicinal', '2 weeks', 'Full Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1587593132708-ced45b9a8c93?w=400', 'Makes a soothing tea, helps with sleep.'),
-('Onion', 'Food', '5 weeks', 'Full Sun', 'Daily', 'Hard', 'https://images.unsplash.com/photo-1587049332298-1c42e83937a7?w=400', 'Essential food plant with long storage life.'),
-('Mint', 'Medicinal', '3 weeks', 'Partial Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=400', 'Fast-growing herb with multiple uses.'),
-('Radish', 'Food', '1.5 weeks', 'Full Sun', 'Every 2 days', 'Easy', 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=400', 'Quick-growing root vegetable.'),
-('Basil', 'Medicinal', '2 weeks', 'Partial Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=400', 'Aromatic herb with antibacterial properties.'),
-('Dandelion', 'Medicinal', '2 weeks', 'Full Sun', 'Every 3 days', 'Easy', 'https://images.unsplash.com/photo-1558697698-9300a84a6a99?w=400', 'Common wild edible with medicinal properties.'),
-('Cabbage', 'Food', '4 weeks', 'Full Sun', 'Daily', 'Medium', 'https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=400', 'Nutrient-rich vegetable with good storage.'),
-('Calendula', 'Medicinal', '3 weeks', 'Full Sun', 'Weekly', 'Medium', 'https://images.unsplash.com/photo-1596637510430-78301a44834a?w=400', 'Healing flower for skin conditions.'),
-('Mushroom', 'Food', '3 weeks', 'Shade', 'Mist Daily', 'Hard', 'https://images.unsplash.com/photo-1611312059346-91e90bae9875?w=400', 'Indoor-grown protein source.');
+('Tomato', 'Food', '2 weeks', 'Full Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=800&q=80', 'Easy to grow and versatile vegetable, rich in vitamins.'),
+('Aloe Vera', 'Medicinal', '3 weeks', 'Partial Sun', 'Weekly', 'Easy', 'https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&w=800&q=80', 'Excellent for burns and skin care.'),
+('Lavender', 'Utility', '4 weeks', 'Full Sun', 'Bi-weekly', 'Medium', 'https://images.unsplash.com/photo-1498745176741-e2e1c878c5da?auto=format&fit=crop&w=800&q=80', 'Aromatic herb with calming properties.'),
+('Chamomile', 'Medicinal', '2 weeks', 'Full Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?auto=format&fit=crop&w=800&q=80', 'Makes a soothing tea, helps with sleep.'),
+('Onion', 'Food', '5 weeks', 'Full Sun', 'Daily', 'Hard', 'https://images.unsplash.com/photo-1587049332298-1c42e83937a7?auto=format&fit=crop&w=800&q=80', 'Essential food plant with long storage life.'),
+('Mint', 'Medicinal', '3 weeks', 'Partial Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?auto=format&fit=crop&w=800&q=80', 'Fast-growing herb with multiple uses.'),
+('Radish', 'Food', '1.5 weeks', 'Full Sun', 'Every 2 days', 'Easy', 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?auto=format&fit=crop&w=800&q=80', 'Quick-growing root vegetable.'),
+('Basil', 'Medicinal', '2 weeks', 'Partial Sun', 'Daily', 'Easy', 'https://images.unsplash.com/photo-1618375569909-3c8616cf7733?auto=format&fit=crop&w=800&q=80', 'Aromatic herb with antibacterial properties.'),
+('Dandelion', 'Medicinal', '2 weeks', 'Full Sun', 'Every 3 days', 'Easy', 'https://images.unsplash.com/photo-1620145000662-4d4b1bf6ce6e?auto=format&fit=crop&w=800&q=80', 'Common wild edible with medicinal properties.'),
+('Cabbage', 'Food', '4 weeks', 'Full Sun', 'Daily', 'Medium', 'https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?auto=format&fit=crop&w=800&q=80', 'Nutrient-rich vegetable with good storage.'),
+('Calendula', 'Medicinal', '3 weeks', 'Full Sun', 'Weekly', 'Medium', 'https://images.unsplash.com/photo-1599687267812-35c05ff70ee9?auto=format&fit=crop&w=800&q=80', 'Healing flower for skin conditions.'),
+('Mushroom', 'Food', '3 weeks', 'Shade', 'Mist Daily', 'Hard', 'https://images.unsplash.com/photo-1611312059346-91e90bae9875?auto=format&fit=crop&w=800&q=80', 'Indoor-grown protein source.');
 
 -- Insert sample medicine recipes
 INSERT INTO medicines (user_id, name, description, ingredients, steps) VALUES

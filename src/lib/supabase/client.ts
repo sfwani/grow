@@ -44,18 +44,61 @@ export async function getPlants() {
 }
 
 export async function searchPlantsByCategory(category: string) {
-  const { data: plants, error } = await supabase
-    .from('plants')
-    .select('*')
-    .ilike('category', `%${category}%`)
-    .order('name')
+  const query = supabase.from('plants').select('*')
+
+  if (category && category.toLowerCase() !== 'all') {
+    query.eq('category', category)
+  }
+
+  const { data: plants, error } = await query.order('name')
 
   if (error) {
-    console.error('Error searching plants:', error)
-    return []
+    throw new Error(`Failed to search plants: ${error.message}`)
   }
 
   return plants.map(plant => ({
+    id: plant.id,
+    name: plant.name,
+    description: plant.description,
+    growthTime: plant.growth_time,
+    difficulty: plant.difficulty,
+    tags: [plant.category],
+    imageUrl: plant.image_url,
+    stages: {
+      planted: false,
+      sprouted: false,
+      flowering: false,
+      harvested: false
+    },
+    requirements: {
+      sun: plant.sunlight,
+      soil: 'Any',
+      water: plant.water,
+      temperature: plant.temperature_range
+    },
+    uses: {
+      [plant.category.toLowerCase()]: [plant.description]
+    }
+  }))
+}
+
+export async function getPlantById(id: string) {
+  const { data: plant, error } = await supabase
+    .from('plants')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to get plant: ${error.message}`)
+  }
+
+  if (!plant) {
+    throw new Error('Plant not found')
+  }
+
+  // Transform the data to match our Plant interface
+  return {
     id: plant.id,
     name: plant.name,
     description: plant.description,
@@ -78,5 +121,5 @@ export async function searchPlantsByCategory(category: string) {
     uses: {
       [plant.category.toLowerCase()]: [plant.description]
     }
-  }))
+  }
 } 

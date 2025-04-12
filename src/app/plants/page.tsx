@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -73,11 +76,9 @@ function PlantCard({ plant }: { plant: Plant }) {
   )
 }
 
-// Default plant categories for post-apocalyptic survival
-const defaultQueries = [
-  'Food',
-  'Medicinal',
-  'Utility'
+const categories = [
+  { label: 'Food', value: 'Food' },
+  { label: 'Medicinal', value: 'Medicinal' }
 ]
 
 // Server Component to fetch plants
@@ -116,19 +117,19 @@ export default async function PlantsPage({
                 : 'bg-secondary/10 text-secondary-foreground hover:bg-secondary/20'
             }`}
           >
-            All
+            All Plants
           </Link>
-          {defaultQueries.map(query => (
+          {categories.map((category) => (
             <Link 
-              key={query}
-              href={`/plants?q=${query}`}
+              key={category.value}
+              href={`/plants?q=${category.value}`}
               className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                searchParams.q === query 
+                searchParams.q === category.value 
                   ? 'bg-primary text-primary-foreground' 
                   : 'bg-secondary/10 text-secondary-foreground hover:bg-secondary/20'
               }`}
             >
-              {query}
+              {category.label}
             </Link>
           ))}
         </div>
