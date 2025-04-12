@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { searchPlants } from '@/lib/openfarm-api'
+import { getPlants, searchPlantsByCategory } from '@/lib/supabase/client'
 import { Plant } from '@/types/plants'
 
 // Plant Card Component
@@ -10,7 +10,7 @@ function PlantCard({ plant }: { plant: Plant }) {
     <Link href={`/plants/${plant.id}`} className="block">
       <div className="group relative overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-colors hover:bg-accent">
         <div className="aspect-square overflow-hidden relative">
-          {plant.imageUrl && plant.imageUrl !== '/images/plants/default-plant.jpg' ? (
+          {plant.imageUrl ? (
             <Image 
               src={plant.imageUrl} 
               alt={plant.name}
@@ -29,7 +29,7 @@ function PlantCard({ plant }: { plant: Plant }) {
             {plant.description}
           </p>
           <div className="mt-2 flex flex-wrap gap-1">
-            {plant.tags.slice(0, 3).map((tag) => (
+            {plant.tags.map((tag) => (
               <span
                 key={tag}
                 className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
@@ -37,11 +37,6 @@ function PlantCard({ plant }: { plant: Plant }) {
                 {tag}
               </span>
             ))}
-            {plant.tags.length > 3 && (
-              <span className="inline-flex items-center rounded-full bg-secondary/10 px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-                +{plant.tags.length - 3}
-              </span>
-            )}
           </div>
           <div className="mt-3 flex items-center justify-between text-sm">
             <span className="text-muted-foreground">
@@ -80,30 +75,25 @@ function PlantCard({ plant }: { plant: Plant }) {
 
 // Default plant categories for post-apocalyptic survival
 const defaultQueries = [
-  'medicinal',
-  'drought resistant',
-  'edible',
-  'perennial',
-  'easy to grow',
-  'nutritious'
+  'Food',
+  'Medicinal',
+  'Utility'
 ]
 
 // Server Component to fetch plants
-export default async function PlantsPage() {
-  // Get initial plants based on survival value
-  const initialPlants = await searchPlants('survival')
+export default async function PlantsPage({
+  searchParams
+}: {
+  searchParams: { q?: string }
+}) {
+  let plants: Plant[] = []
   
-  // Fetch additional medicinal plants
-  const medicinalPlants = await searchPlants('medicinal')
-  
-  // Combine and remove duplicates
-  const allPlants = [...initialPlants]
-  
-  // Add medicinal plants that aren't already in the list
-  for (const plant of medicinalPlants) {
-    if (!allPlants.some(p => p.id === plant.id)) {
-      allPlants.push(plant)
-    }
+  if (searchParams.q) {
+    // If there's a search query, search by category
+    plants = await searchPlantsByCategory(searchParams.q)
+  } else {
+    // Otherwise, get all plants
+    plants = await getPlants()
   }
   
   return (
@@ -116,15 +106,29 @@ export default async function PlantsPage() {
           </p>
         </div>
         
-        {/* Quick category filters */}
+        {/* Category filters */}
         <div className="flex flex-wrap gap-2">
+          <Link 
+            href="/plants"
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+              !searchParams.q 
+                ? 'bg-primary text-primary-foreground' 
+                : 'bg-secondary/10 text-secondary-foreground hover:bg-secondary/20'
+            }`}
+          >
+            All
+          </Link>
           {defaultQueries.map(query => (
             <Link 
               key={query}
               href={`/plants?q=${query}`}
-              className="inline-flex items-center rounded-full bg-secondary/10 px-3 py-1 text-xs font-medium text-secondary-foreground hover:bg-secondary/20 transition-colors"
+              className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                searchParams.q === query 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'bg-secondary/10 text-secondary-foreground hover:bg-secondary/20'
+              }`}
             >
-              {query.charAt(0).toUpperCase() + query.slice(1)}
+              {query}
             </Link>
           ))}
         </div>
@@ -132,7 +136,7 @@ export default async function PlantsPage() {
 
       {/* Plant grid */}
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {allPlants.map((plant) => (
+        {plants.map((plant) => (
           <PlantCard key={plant.id} plant={plant} />
         ))}
       </div>

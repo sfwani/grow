@@ -16,6 +16,14 @@ const nextConfig = {
         hostname: "openfarm.cc",
         pathname: "/**",
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.dicebear.com',
+      }
     ],
   },
   // Other configurations can be added here
