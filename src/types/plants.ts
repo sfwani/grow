@@ -4,6 +4,7 @@ export interface Plant {
   description: string
   growthTime: string
   difficulty: 'Easy' | 'Medium' | 'Hard'
+  category: 'Medicinal' | 'Food'
   tags: string[]
   imageUrl: string
   stages: {
@@ -12,10 +13,10 @@ export interface Plant {
     flowering: boolean
     harvested: boolean
   }
-  requirements: {
-    sun: string
+  requirements?: {
+    sun?: string
     soil: string
-    water: string
+    water?: string
     temperature: string
   }
   uses: {

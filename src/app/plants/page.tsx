@@ -10,66 +10,142 @@ import { Plant } from '@/types/plants'
 // Plant Card Component
 function PlantCard({ plant }: { plant: Plant }) {
   return (
-    <Link href={`/plants/${plant.id}`} className="block">
-      <div className="group relative overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-colors hover:bg-accent">
-        <div className="aspect-square overflow-hidden relative">
-          {plant.imageUrl ? (
-            <Image 
-              src={plant.imageUrl} 
-              alt={plant.name}
-              fill
-              className="object-cover transition-transform group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full w-full bg-muted/50 items-center justify-center text-4xl">
-              🌱
-            </div>
-          )}
+    <Link
+      href={`/plants/${plant.id}`}
+      className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-md transition-all duration-300 hover:shadow-xl hover:ring-2 hover:ring-primary/20"
+    >
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <Image
+          src={plant.imageUrl}
+          alt={plant.name}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="text-xl font-semibold tracking-tight text-white">{plant.name}</h3>
+          <p className="mt-1 line-clamp-2 text-sm text-white/90">{plant.description}</p>
         </div>
-        <div className="p-4">
-          <h3 className="font-semibold tracking-tight">{plant.name}</h3>
-          <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-            {plant.description}
-          </p>
-          <div className="mt-2 flex flex-wrap gap-1">
-            {plant.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
-              >
-                {tag}
+      </div>
+      <div className="p-4">
+        <div className="flex items-center justify-between">
+          <div className="space-x-2">
+            {plant.category === 'Medicinal' ? (
+              <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800">
+                Medicinal
               </span>
-            ))}
+            ) : (
+              <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                Food
+              </span>
+            )}
           </div>
-          <div className="mt-3 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">
-              {plant.growthTime}
-            </span>
-            <span className={`font-medium ${
-              plant.difficulty === 'Easy' ? 'text-green-500' :
-              plant.difficulty === 'Medium' ? 'text-yellow-500' :
-              'text-red-500'
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+            >
+              <path d="M12 2v20"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2v20"/>
+              <path d="M20 12a8 8 0 1 1-16 0"/>
+            </svg>
+            <span>{plant.growthTime}</span>
+          </div>
+        </div>
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`h-4 w-4 ${
+                plant.difficulty === 'Easy' ? 'text-green-500' :
+                plant.difficulty === 'Medium' ? 'text-yellow-500' :
+                'text-red-500'
+              }`}
+            >
+              <path d="M12 2v20"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/>
+              <path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"/>
+            </svg>
+            <span className={`text-sm font-medium ${
+              plant.difficulty === 'Easy' ? 'text-green-600' :
+              plant.difficulty === 'Medium' ? 'text-yellow-600' :
+              'text-red-600'
             }`}>
               {plant.difficulty}
             </span>
           </div>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-        <div className="absolute bottom-4 right-4 rounded-full bg-primary p-2 text-primary-foreground opacity-0 transition-opacity group-hover:opacity-100">
-          <span className="sr-only">View plant</span>
-          <svg
-            className="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
+          <div className="text-sm text-muted-foreground">
+            {plant.requirements && (
+              <div className="flex items-center gap-2">
+                {plant.requirements.water && (
+                  <span title="Water needs" className="flex items-center gap-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4 text-blue-500"
+                    >
+                      <path d="M12 2v6"/>
+                      <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+                    </svg>
+                    {plant.requirements.water}
+                  </span>
+                )}
+                {plant.requirements.sun && (
+                  <span title="Sunlight needs" className="flex items-center gap-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4 text-yellow-500"
+                    >
+                      <circle cx="12" cy="12" r="4"/>
+                      <path d="M12 2v2"/>
+                      <path d="M12 20v2"/>
+                      <path d="m4.93 4.93 1.41 1.41"/>
+                      <path d="m17.66 17.66 1.41 1.41"/>
+                      <path d="M2 12h2"/>
+                      <path d="M20 12h2"/>
+                      <path d="m6.34 17.66-1.41 1.41"/>
+                      <path d="m19.07 4.93-1.41 1.41"/>
+                    </svg>
+                    {plant.requirements.sun}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Link>

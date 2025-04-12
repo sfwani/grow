@@ -202,16 +202,24 @@ function MedicineCard({ medicine }: { medicine: Medicine }) {
   return (
     <Link
       href={`/medicine/${medicine.id}`}
-      className="group relative overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-colors hover:bg-accent"
+      className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-md transition-all duration-300 hover:shadow-xl hover:ring-2 hover:ring-primary/20"
     >
-      <div className="aspect-video overflow-hidden relative">
+      <div className="relative aspect-[4/3] overflow-hidden">
         <Image 
           src={medicine.imageUrl} 
           alt={medicine.name}
           fill
-          className="object-cover transition-transform group-hover:scale-105"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute top-2 right-2">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="text-xl font-semibold tracking-tight text-white">{medicine.name}</h3>
+          <p className="mt-1 line-clamp-2 text-sm text-white/90">{medicine.description}</p>
+        </div>
+      </div>
+      <div className="p-4">
+        <div className="mb-4">
           <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
             medicine.category === 'Tincture' ? 'bg-purple-100 text-purple-800' :
             medicine.category === 'Tea' ? 'bg-green-100 text-green-800' :
@@ -224,43 +232,99 @@ function MedicineCard({ medicine }: { medicine: Medicine }) {
             {medicine.category}
           </span>
         </div>
-      </div>
-      <div className="p-4">
-        <h3 className="font-semibold tracking-tight">{medicine.name}</h3>
-        <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-          {medicine.description}
-        </p>
-        <div className="mt-3">
-          <h4 className="text-sm font-medium">Ingredients:</h4>
-          <div className="mt-1 flex flex-wrap gap-1">
-            {medicine.ingredients.map((ingredient) => (
-              <span
-                key={ingredient.plantId}
-                className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
-              >
-                {ingredient.plantName} ({ingredient.amount})
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4 text-primary"
+            >
+              <path d="M12 2v6"/>
+              <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+            </svg>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Prep Time:</span>
+              <span className="text-sm font-medium">{medicine.time}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4 text-primary"
+            >
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Shelf Life:</span>
+              <span className="text-sm font-medium">{medicine.shelf_life}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`h-4 w-4 ${
+                medicine.difficulty === 'Easy' ? 'text-green-500' :
+                medicine.difficulty === 'Medium' ? 'text-yellow-500' :
+                'text-red-500'
+              }`}
+            >
+              <path d="M12 2v20"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/>
+              <path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"/>
+            </svg>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Difficulty:</span>
+              <span className={`text-sm font-medium ${
+                medicine.difficulty === 'Easy' ? 'text-green-600' :
+                medicine.difficulty === 'Medium' ? 'text-yellow-600' :
+                'text-red-600'
+              }`}>
+                {medicine.difficulty}
               </span>
-            ))}
+            </div>
           </div>
         </div>
-        <div className="mt-3 space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Prep Time:</span>
-            <span className="font-medium">{medicine.time}</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Shelf Life:</span>
-            <span className="font-medium">{medicine.shelf_life}</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Difficulty:</span>
-            <span className={`font-medium ${
-              medicine.difficulty === 'Easy' ? 'text-green-500' :
-              medicine.difficulty === 'Medium' ? 'text-yellow-500' :
-              'text-red-500'
-            }`}>
-              {medicine.difficulty}
-            </span>
+
+        <div className="mt-4">
+          <span className="text-sm text-muted-foreground">Ingredients:</span>
+          <div className="mt-1.5 flex flex-wrap gap-1">
+            {medicine.ingredients.map((ingredient) => (
+              <Link
+                key={ingredient.plantId}
+                href={`/plants/${ingredient.plantId}`}
+                className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary hover:bg-primary/20"
+              >
+                {ingredient.plantName}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
