@@ -195,156 +195,171 @@ export default function AIGuidePage() {
             </p>
           </div>
 
-          {/* Upload Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {/* Left: Upload Area */}
-            <Card className="relative overflow-hidden border-emerald-500/20 bg-black/40 backdrop-blur-sm order-2 md:order-1">
-              <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent" />
-              <div className="relative p-6">
-                <div className="text-center space-y-4">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    ref={fileInputRef}
-                    onChange={handleImageUpload}
-                  />
-                  <Button
-                    variant="outline"
-                    className="w-full h-32 bg-emerald-500/10 border-2 border-dashed border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isAnalyzing}
-                  >
-                    <ImageIcon className="w-8 h-8" />
-                    <span className="text-sm">Click to upload a plant photo</span>
-                    <span className="text-xs text-emerald-500/60">Supports JPEG, PNG (max 5MB)</span>
-                  </Button>
-                </div>
-
-                {/* Features */}
-                <div className="mt-6 grid grid-cols-1 gap-4">
-                  {features.map((feature, index) => (
-                    <div 
-                      key={index}
-                      className="flex items-center space-x-3 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10"
-                    >
-                      <div className="text-2xl">{feature.icon}</div>
-                      <div>
-                        <h3 className="font-medium text-emerald-400">{feature.title}</h3>
-                        <p className="text-sm text-gray-400">{feature.description}</p>
-                      </div>
+          <div className="space-y-6">
+            {/* Main Upload Area (shown when no messages) */}
+            {messages.length === 0 && (
+              <Card className="relative overflow-hidden border-emerald-500/20 bg-black/40 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent" />
+                <div className="relative p-8">
+                  <div className="max-w-2xl mx-auto space-y-8">
+                    {/* Large Upload Button */}
+                    <div className="text-center space-y-4">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        ref={fileInputRef}
+                        onChange={handleImageUpload}
+                      />
+                      <Button
+                        variant="outline"
+                        className="w-full h-48 bg-emerald-500/10 border-2 border-dashed border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 flex flex-col items-center justify-center space-y-3"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isAnalyzing}
+                      >
+                        <ImageIcon className="w-12 h-12" />
+                        <div className="space-y-1">
+                          <p className="text-lg font-medium">Click to upload a plant photo</p>
+                          <p className="text-sm text-emerald-500/60">Supports JPEG, PNG (max 5MB)</p>
+                        </div>
+                      </Button>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </Card>
 
-            {/* Right: Chat Interface */}
-            <Card className="relative overflow-hidden border-emerald-500/20 bg-black/40 backdrop-blur-sm order-1 md:order-2">
-              <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent" />
-              <div className="relative p-6 space-y-4">
-                {/* Chat Display Area */}
-                <div 
-                  ref={chatContainerRef}
-                  className="h-[500px] rounded-xl bg-black/40 border border-emerald-500/20 overflow-y-auto scroll-smooth p-6 space-y-4"
-                >
-                  <div className="flex items-start space-x-4 animate-slide-up">
-                    <div className="p-2 rounded-lg bg-emerald-500/20 backdrop-blur-sm">
-                      <Sparkles className="w-5 h-5 text-emerald-400" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-emerald-400 font-medium mb-2">Plant Health Assistant</p>
-                      <p className="text-gray-300">
-                        Hello! I can help diagnose plant health issues and provide treatment recommendations. Upload a photo or ask me any questions about plant care.
-                      </p>
+                    {/* Feature Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {features.map((feature, index) => (
+                        <div 
+                          key={index}
+                          className="flex flex-col items-center text-center p-6 rounded-lg bg-emerald-500/5 border border-emerald-500/10 space-y-2"
+                        >
+                          <div className="text-3xl">{feature.icon}</div>
+                          <h3 className="font-medium text-emerald-400">{feature.title}</h3>
+                          <p className="text-sm text-gray-400">{feature.description}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
-
-                  {/* Messages */}
-                  {messages.map((msg: Message, index: number) => (
-                    <div 
-                      key={index} 
-                      className={cn(
-                        "flex items-start space-x-4 animate-slide-up transition-opacity",
-                        msg.role === "assistant" ? "opacity-90" : "opacity-100"
-                      )}
-                    >
-                      <div className={cn(
-                        "p-2 rounded-lg backdrop-blur-sm",
-                        msg.role === "assistant" 
-                          ? "bg-emerald-500/20" 
-                          : "bg-blue-500/20"
-                      )}>
-                        {msg.role === "assistant" ? (
-                          <Sparkles className="w-5 h-5 text-emerald-400" />
-                        ) : (
-                          <div className="w-5 h-5 rounded-full bg-blue-400" />
-                        )}
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        {msg.image && (
-                          <div className="mb-2 relative group">
-                            <img 
-                              src={msg.image} 
-                              alt="Plant analysis" 
-                              className="rounded-lg max-w-[300px] border border-emerald-500/20 transition-transform group-hover:scale-105" 
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
-                          </div>
-                        )}
-                        <ReactMarkdown
-                          components={{
-                            p: ({children}: {children: React.ReactNode}) => <p className="text-gray-300 prose prose-invert prose-sm max-w-none">{children}</p>,
-                            ul: ({children}: {children: React.ReactNode}) => <ul className="list-disc list-inside space-y-1">{children}</ul>,
-                            ol: ({children}: {children: React.ReactNode}) => <ol className="list-decimal list-inside space-y-1">{children}</ol>,
-                            li: ({children}: {children: React.ReactNode}) => <li className="text-gray-300">{children}</li>,
-                            a: ({children, href}: {children: React.ReactNode, href?: string}) => <a href={href} className="text-emerald-400 hover:text-emerald-300">{children}</a>,
-                            strong: ({children}: {children: React.ReactNode}) => <strong className="text-emerald-400 font-semibold">{children}</strong>,
-                            em: ({children}: {children: React.ReactNode}) => <em className="text-emerald-300">{children}</em>,
-                            code: ({children}: {children: React.ReactNode}) => <code className="bg-emerald-500/10 text-emerald-300 rounded px-1">{children}</code>,
-                            blockquote: ({children}: {children: React.ReactNode}) => <blockquote className="border-l-2 border-emerald-500/20 pl-4 italic">{children}</blockquote>,
-                          }}
-                        >
-                          {msg.content}
-                        </ReactMarkdown>
-                      </div>
-                    </div>
-                  ))}
-
-                  {isAnalyzing && (
-                    <div className="flex items-center justify-center space-x-2 text-emerald-400/80 animate-pulse p-4">
-                      <Sparkles className="w-5 h-5" />
-                      <span>Analyzing plant health...</span>
-                    </div>
-                  )}
                 </div>
+              </Card>
+            )}
 
-                {/* Input Area */}
-                <div className="flex space-x-3 pt-2">
-                  <Input
-                    placeholder="Ask follow-up questions about plant health..."
-                    value={message}
-                    onChange={handleInputChange}
-                    className="flex-1 bg-black/40 border-emerald-500/20 text-gray-300 placeholder:text-gray-500 focus-visible:ring-emerald-500/50"
-                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSendMessage();
-                      }
-                    }}
-                    disabled={isAnalyzing}
-                  />
-                  <Button 
-                    className="bg-emerald-500/80 hover:bg-emerald-500/90 text-black font-medium"
-                    onClick={handleSendMessage}
-                    disabled={isAnalyzing || !message.trim()}
+            {/* Chat Interface (shown after upload) */}
+            {messages.length > 0 && (
+              <Card className="relative overflow-hidden border-emerald-500/20 bg-black/40 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent" />
+                <div className="relative p-6 space-y-4">
+                  {/* Chat Display Area */}
+                  <div 
+                    ref={chatContainerRef}
+                    className="h-[500px] rounded-xl bg-black/40 border border-emerald-500/20 overflow-y-auto scroll-smooth p-6 space-y-4"
                   >
-                    <Send className="w-4 h-4 mr-2" />
-                    Send
-                  </Button>
+                    <div className="flex items-start space-x-4 animate-slide-up">
+                      <div className="p-2 rounded-lg bg-emerald-500/20 backdrop-blur-sm">
+                        <Sparkles className="w-5 h-5 text-emerald-400" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-emerald-400 font-medium mb-2">Plant Health Assistant</p>
+                        <p className="text-gray-300">
+                          Hello! I can help diagnose plant health issues and provide treatment recommendations. Upload a photo or ask me any questions about plant care.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Messages */}
+                    {messages.map((msg: Message, index: number) => (
+                      <div 
+                        key={index} 
+                        className={cn(
+                          "flex items-start space-x-4 animate-slide-up transition-opacity",
+                          msg.role === "assistant" ? "opacity-90" : "opacity-100"
+                        )}
+                      >
+                        <div className={cn(
+                          "p-2 rounded-lg backdrop-blur-sm",
+                          msg.role === "assistant" 
+                            ? "bg-emerald-500/20" 
+                            : "bg-blue-500/20"
+                        )}>
+                          {msg.role === "assistant" ? (
+                            <Sparkles className="w-5 h-5 text-emerald-400" />
+                          ) : (
+                            <div className="w-5 h-5 rounded-full bg-blue-400" />
+                          )}
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          {msg.image && (
+                            <div className="mb-2 relative group">
+                              <img 
+                                src={msg.image} 
+                                alt="Plant analysis" 
+                                className="rounded-lg max-w-[300px] border border-emerald-500/20 transition-transform group-hover:scale-105" 
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
+                            </div>
+                          )}
+                          <ReactMarkdown
+                            components={{
+                              p: ({children}: {children: React.ReactNode}) => <p className="text-gray-300 prose prose-invert prose-sm max-w-none">{children}</p>,
+                              ul: ({children}: {children: React.ReactNode}) => <ul className="list-disc list-inside space-y-1">{children}</ul>,
+                              ol: ({children}: {children: React.ReactNode}) => <ol className="list-decimal list-inside space-y-1">{children}</ol>,
+                              li: ({children}: {children: React.ReactNode}) => <li className="text-gray-300">{children}</li>,
+                              a: ({children, href}: {children: React.ReactNode, href?: string}) => <a href={href} className="text-emerald-400 hover:text-emerald-300">{children}</a>,
+                              strong: ({children}: {children: React.ReactNode}) => <strong className="text-emerald-400 font-semibold">{children}</strong>,
+                              em: ({children}: {children: React.ReactNode}) => <em className="text-emerald-300">{children}</em>,
+                              code: ({children}: {children: React.ReactNode}) => <code className="bg-emerald-500/10 text-emerald-300 rounded px-1">{children}</code>,
+                              blockquote: ({children}: {children: React.ReactNode}) => <blockquote className="border-l-2 border-emerald-500/20 pl-4 italic">{children}</blockquote>,
+                            }}
+                          >
+                            {msg.content}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    ))}
+
+                    {isAnalyzing && (
+                      <div className="flex items-center justify-center space-x-2 text-emerald-400/80 animate-pulse p-4">
+                        <Sparkles className="w-5 h-5" />
+                        <span>Analyzing plant health...</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Input Area with Upload Option */}
+                  <div className="flex space-x-3 pt-2">
+                    <Button
+                      variant="outline"
+                      className="bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isAnalyzing}
+                    >
+                      <ImageIcon className="w-4 h-4 mr-2" />
+                      Analyze Another Plant
+                    </Button>
+                    <Input
+                      placeholder="Ask follow-up questions about plant health..."
+                      value={message}
+                      onChange={handleInputChange}
+                      className="flex-1 bg-black/40 border-emerald-500/20 text-gray-300 placeholder:text-gray-500 focus-visible:ring-emerald-500/50"
+                      onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSendMessage();
+                        }
+                      }}
+                      disabled={isAnalyzing}
+                    />
+                    <Button 
+                      className="bg-emerald-500/80 hover:bg-emerald-500/90 text-black font-medium"
+                      onClick={handleSendMessage}
+                      disabled={isAnalyzing || !message.trim()}
+                    >
+                      <Send className="w-4 h-4 mr-2" />
+                      Send
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            )}
           </div>
         </div>
       </div>
