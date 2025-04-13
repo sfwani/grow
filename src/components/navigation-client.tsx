@@ -10,7 +10,6 @@ const navigation = [
   { name: 'Plants', href: '/plants', icon: '🌱' },
   { name: 'Medicine', href: '/medicine', icon: '🧪' },
   { name: 'Barter', href: '/barter', icon: '🔄' },
-  { name: 'Inventory', href: '/inventory', icon: '🎒' },
   { name: 'Leaderboard', href: '/leaderboard', icon: '🏆' },
   { name: 'AI Guide', href: '/ai', icon: '🤖' },
 ]
