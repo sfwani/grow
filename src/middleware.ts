@@ -2,6 +2,15 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+// Define protected routes that require authentication
+const protectedRoutes = [
+  '/ai',
+  '/plants',
+  '/medicine',
+  '/barter',
+  '/leaderboard'
+]
+
 export async function middleware(request: NextRequest) {
   const res = NextResponse.next()
   
@@ -34,12 +43,17 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
-  // If there is no session and the user is trying to access a protected route
-  if (!session && !request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.startsWith('/register')) {
+  // Check if the current route is protected
+  const isProtectedRoute = protectedRoutes.some(route => 
+    request.nextUrl.pathname.startsWith(route)
+  )
+
+  // If there is no session and trying to access a protected route
+  if (!session && isProtectedRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // If there is a session and the user is trying to access auth pages
+  // If there is a session and trying to access auth pages
   if (session && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register'))) {
     return NextResponse.redirect(new URL('/', request.url))
   }
