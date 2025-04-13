@@ -74,25 +74,25 @@ export default function Home() {
           </div>
           
           <h1 className="text-5xl font-bold text-white tracking-tight">
-            Survive & Thrive with AI Plant Analysis
+            Survive & Thrive in the Wasteland
           </h1>
           <p className="text-lg text-emerald-300/80 max-w-2xl mx-auto leading-relaxed">
-            In a world where every plant matters, our AI system helps you identify safe edibles, 
-            detect radiation damage, and ensure your garden's survival in harsh conditions.
+            Your all-in-one survival platform. Use AI to identify safe plants and detect radiation damage, 
+            then trade your resources with fellow survivors in our secure barter network.
           </p>
           <div className="flex justify-center gap-4 pt-2">
             <Link 
               href="/ai" 
               className="inline-flex items-center px-8 py-3 rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20"
             >
-              Analyze Plant Safety
+              Analyze Plants
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
             <Link 
-              href="/plants" 
+              href="/barter" 
               className="inline-flex items-center px-8 py-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/10"
             >
-              Access Survival Garden
+              Trade Resources
             </Link>
           </div>
         </div>

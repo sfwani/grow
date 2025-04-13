@@ -5,8 +5,8 @@ import { LayoutClient } from '@/components/layout-client'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Apocalypse Garden',
-  description: 'A post-apocalyptic survival guide for growing plants and crafting medicine',
+  title: 'survivor.wiki',
+  description: 'Your guide to post-apocalyptic survival and self-sufficiency',
 }
 
 export default function RootLayout({

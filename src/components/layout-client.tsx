@@ -85,7 +85,7 @@ export function LayoutClient({ children }: LayoutClientProps) {
               <div className="absolute inset-0 bg-emerald-500/20 blur-lg rounded-full" />
             </div>
             <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 via-emerald-200 to-emerald-400 text-transparent bg-clip-text hover:from-emerald-300 hover:to-emerald-500 transition-all">
-              Apocalypse Garden
+              survivor.wiki
             </span>
           </Link>
 
