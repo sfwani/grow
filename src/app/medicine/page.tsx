@@ -204,127 +204,92 @@ function MedicineCard({ medicine }: { medicine: Medicine }) {
       href={`/medicine/${medicine.id}`}
       className="group relative overflow-hidden rounded-xl border bg-card text-card-foreground shadow-md transition-all duration-300 hover:shadow-xl hover:ring-2 hover:ring-primary/20"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Image 
-          src={medicine.imageUrl} 
-          alt={medicine.name}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="text-xl font-semibold tracking-tight text-white">{medicine.name}</h3>
-          <p className="mt-1 line-clamp-2 text-sm text-white/90">{medicine.description}</p>
-        </div>
-      </div>
-      <div className="p-4">
-        <div className="mb-4">
-          <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-            medicine.category === 'Tincture' ? 'bg-purple-500/10 text-purple-400' :
-            medicine.category === 'Tea' ? 'bg-emerald-500/10 text-emerald-400' :
-            medicine.category === 'Salve' ? 'bg-blue-500/10 text-blue-400' :
-            medicine.category === 'Syrup' ? 'bg-amber-500/10 text-amber-400' :
-            medicine.category === 'Oil' ? 'bg-orange-500/10 text-orange-400' :
-            medicine.category === 'Balm' ? 'bg-pink-500/10 text-pink-400' :
-            'bg-gray-500/10 text-gray-400'
-          }`}>
-            {medicine.category}
-          </span>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4 text-primary"
-            >
-              <path d="M12 2v6"/>
-              <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
-            </svg>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Prep Time:</span>
-              <span className="text-sm font-medium">{medicine.time}</span>
-            </div>
+      <div className="p-6 space-y-4">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+              medicine.category === 'Tincture' ? 'bg-purple-500/10 text-purple-400' :
+              medicine.category === 'Tea' ? 'bg-emerald-500/10 text-emerald-400' :
+              medicine.category === 'Salve' ? 'bg-blue-500/10 text-blue-400' :
+              medicine.category === 'Syrup' ? 'bg-amber-500/10 text-amber-400' :
+              medicine.category === 'Oil' ? 'bg-orange-500/10 text-orange-400' :
+              medicine.category === 'Balm' ? 'bg-pink-500/10 text-pink-400' :
+              'bg-gray-500/10 text-gray-400'
+            }`}>
+              {medicine.category}
+            </span>
+            <span className={`text-xs font-medium ${
+              medicine.difficulty === 'Easy' ? 'text-green-500' :
+              medicine.difficulty === 'Medium' ? 'text-yellow-500' :
+              'text-red-500'
+            }`}>
+              {medicine.difficulty}
+            </span>
           </div>
-
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4 text-primary"
-            >
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Shelf Life:</span>
-              <span className="text-sm font-medium">{medicine.shelf_life}</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`h-4 w-4 ${
-                medicine.difficulty === 'Easy' ? 'text-green-500' :
-                medicine.difficulty === 'Medium' ? 'text-yellow-500' :
-                'text-red-500'
-              }`}
-            >
-              <path d="M12 2v20"/>
-              <path d="M2 12h20"/>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/>
-              <path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"/>
-            </svg>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Difficulty:</span>
-              <span className={`text-sm font-medium ${
-                medicine.difficulty === 'Easy' ? 'text-green-600' :
-                medicine.difficulty === 'Medium' ? 'text-yellow-600' :
-                'text-red-600'
-              }`}>
-                {medicine.difficulty}
-              </span>
-            </div>
-          </div>
+          <h3 className="text-xl font-semibold tracking-tight text-foreground group-hover:text-emerald-400 transition-colors">
+            {medicine.name}
+          </h3>
+          <p className="text-sm text-muted-foreground line-clamp-2">{medicine.description}</p>
         </div>
 
-        <div className="mt-4">
-          <span className="text-sm text-muted-foreground">Ingredients:</span>
-          <div className="mt-1.5 flex flex-wrap gap-1">
-            {medicine.ingredients.map((ingredient) => (
-              <Link
-                key={ingredient.plantId}
-                href={`/plants/${ingredient.plantId}`}
-                className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20"
-              >
-                {ingredient.plantName}
-              </Link>
-            ))}
+        <div className="pt-4 border-t border-border/50">
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4 text-emerald-400"
+                >
+                  <path d="M12 2v6"/>
+                  <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+                </svg>
+                <span>{medicine.time}</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4 text-emerald-400"
+                >
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <span>{medicine.shelf_life}</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <span className="text-xs text-muted-foreground">Key Ingredients:</span>
+              <div className="flex flex-wrap gap-1">
+                {medicine.ingredients.slice(0, 2).map((ingredient) => (
+                  <span
+                    key={ingredient.plantId}
+                    className="inline-flex items-center rounded-full bg-emerald-500/5 px-2 py-0.5 text-xs font-medium text-emerald-400"
+                  >
+                    {ingredient.plantName}
+                  </span>
+                ))}
+                {medicine.ingredients.length > 2 && (
+                  <span className="inline-flex items-center rounded-full bg-emerald-500/5 px-2 py-0.5 text-xs font-medium text-emerald-400">
+                    +{medicine.ingredients.length - 2}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
