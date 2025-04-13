@@ -20,12 +20,6 @@ const features = [
     icon: "🔄",
   },
   {
-    title: "Inventory",
-    description: "Track your survival resources",
-    href: "/inventory",
-    icon: "🎒",
-  },
-  {
     title: "Leaderboard",
     description: "Compare your survival skills",
     href: "/leaderboard",
@@ -80,15 +74,28 @@ export default function Home() {
           
           {/* Feature grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            {features.map((feature) => (
-              <FeatureCard
-                key={feature.href}
-                title={feature.title}
-                description={feature.description}
-                href={feature.href}
-                icon={feature.icon}
-              />
-            ))}
+            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.slice(0, 3).map((feature) => (
+                <FeatureCard
+                  key={feature.href}
+                  title={feature.title}
+                  description={feature.description}
+                  href={feature.href}
+                  icon={feature.icon}
+                />
+              ))}
+            </div>
+            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6 md:w-2/3 mx-auto">
+              {features.slice(3).map((feature) => (
+                <FeatureCard
+                  key={feature.href}
+                  title={feature.title}
+                  description={feature.description}
+                  href={feature.href}
+                  icon={feature.icon}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -221,13 +221,13 @@ function MedicineCard({ medicine }: { medicine: Medicine }) {
       <div className="p-4">
         <div className="mb-4">
           <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-            medicine.category === 'Tincture' ? 'bg-purple-100 text-purple-800' :
-            medicine.category === 'Tea' ? 'bg-green-100 text-green-800' :
-            medicine.category === 'Salve' ? 'bg-blue-100 text-blue-800' :
-            medicine.category === 'Syrup' ? 'bg-yellow-100 text-yellow-800' :
-            medicine.category === 'Oil' ? 'bg-orange-100 text-orange-800' :
-            medicine.category === 'Balm' ? 'bg-pink-100 text-pink-800' :
-            'bg-gray-100 text-gray-800'
+            medicine.category === 'Tincture' ? 'bg-purple-500/10 text-purple-400' :
+            medicine.category === 'Tea' ? 'bg-emerald-500/10 text-emerald-400' :
+            medicine.category === 'Salve' ? 'bg-blue-500/10 text-blue-400' :
+            medicine.category === 'Syrup' ? 'bg-amber-500/10 text-amber-400' :
+            medicine.category === 'Oil' ? 'bg-orange-500/10 text-orange-400' :
+            medicine.category === 'Balm' ? 'bg-pink-500/10 text-pink-400' :
+            'bg-gray-500/10 text-gray-400'
           }`}>
             {medicine.category}
           </span>
@@ -320,7 +320,7 @@ function MedicineCard({ medicine }: { medicine: Medicine }) {
               <Link
                 key={ingredient.plantId}
                 href={`/plants/${ingredient.plantId}`}
-                className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary hover:bg-primary/20"
+                className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20"
               >
                 {ingredient.plantName}
               </Link>
@@ -332,26 +332,97 @@ function MedicineCard({ medicine }: { medicine: Medicine }) {
   )
 }
 
-export default async function MedicinePage() {
-  const medicines = await getMedicines()
-  
+const categories = [
+  'Syrup',
+  'Oil',
+  'Tea',
+  'Balm',
+  'Tincture',
+  'Salve',
+  'Poultice'
+];
+
+const difficultyColors = {
+  Easy: 'text-emerald-400',
+  Medium: 'text-amber-400',
+  Hard: 'text-rose-400'
+};
+
+export default async function MedicinePage({
+  searchParams
+}: {
+  searchParams: { q?: string; category?: string }
+}) {
+  const medicines = await getMedicines();
+  const filteredMedicines = medicines.filter(medicine => 
+    (!searchParams.category || medicine.category === searchParams.category) &&
+    (!searchParams.q || medicine.name.toLowerCase().includes(searchParams.q.toLowerCase()) || 
+     medicine.description.toLowerCase().includes(searchParams.q.toLowerCase()))
+  );
+
   return (
     <div className="container py-8">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Natural Medicine Guide</h1>
-          <p className="mt-2 text-muted-foreground">
-            Traditional remedies using medicinal plants for common ailments
+          <h1 className="text-3xl font-bold tracking-tight text-white">Herbal Medicine</h1>
+          <p className="mt-2 text-gray-400">
+            Natural remedies for post-apocalyptic survival
           </p>
         </div>
         
-        {/* Medicine grid */}
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {medicines.map((medicine) => (
-            <MedicineCard key={medicine.id} medicine={medicine} />
-          ))}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/medicine/create"
+            className="inline-flex items-center justify-center rounded-md bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-400 shadow hover:bg-emerald-500/20 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500/50"
+          >
+            Create Recipe
+          </Link>
         </div>
       </div>
+
+      <div className="mb-6 space-y-4">
+        <div className="flex flex-wrap gap-2">
+          <Link 
+            href="/medicine"
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+              !searchParams.category 
+                ? 'bg-emerald-500/10 text-emerald-400' 
+                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+            }`}
+          >
+            All Recipes
+          </Link>
+          {categories.map((category) => (
+            <Link 
+              key={category}
+              href={`/medicine?category=${category}`}
+              className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                searchParams.category === category
+                  ? 'bg-emerald-500/10 text-emerald-400'
+                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+              }`}
+            >
+              {category}
+            </Link>
+          ))}
+        </div>
+
+        <form className="relative">
+          <input
+            type="text"
+            name="q"
+            defaultValue={searchParams.q}
+            placeholder="Search remedies..."
+            className="w-full md:w-96 px-4 py-2 rounded-md border border-gray-700 bg-gray-800/50 text-sm text-gray-200 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500/50 placeholder:text-gray-500"
+          />
+        </form>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredMedicines.map((medicine) => (
+          <MedicineCard key={medicine.id} medicine={medicine} />
+        ))}
+      </div>
     </div>
-  )
+  );
 } 

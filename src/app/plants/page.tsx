@@ -32,11 +32,11 @@ function PlantCard({ plant }: { plant: Plant }) {
         <div className="flex items-center justify-between">
           <div className="space-x-2">
             {plant.category === 'Medicinal' ? (
-              <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800">
+              <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
                 Medicinal
               </span>
             ) : (
-              <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+              <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-medium text-amber-400">
                 Food
               </span>
             )}
@@ -161,36 +161,54 @@ const categories = [
 export default async function PlantsPage({
   searchParams
 }: {
-  searchParams: { q?: string }
+  searchParams: { q?: string; category?: string }
 }) {
   let plants: Plant[] = []
   
-  if (searchParams.q) {
-    // If there's a search query, search by category
-    plants = await searchPlantsByCategory(searchParams.q)
+  if (searchParams.category) {
+    // If there's a category filter, search by category
+    plants = await searchPlantsByCategory(searchParams.category)
   } else {
     // Otherwise, get all plants
     plants = await getPlants()
   }
+
+  // Filter by search query if present
+  if (searchParams.q) {
+    plants = plants.filter(plant => 
+      plant.name.toLowerCase().includes(searchParams.q!.toLowerCase()) ||
+      plant.description.toLowerCase().includes(searchParams.q!.toLowerCase())
+    )
+  }
   
   return (
     <div className="container py-8">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Survival Flora</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight text-white">Survival Flora</h1>
+          <p className="mt-2 text-gray-400">
             Discover and grow plants essential for post-apocalyptic survival
           </p>
         </div>
         
-        {/* Category filters */}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/plants/create"
+            className="inline-flex items-center justify-center rounded-md bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-400 shadow hover:bg-emerald-500/20 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500/50"
+          >
+            Add Plant
+          </Link>
+        </div>
+      </div>
+
+      <div className="mb-6 space-y-4">
         <div className="flex flex-wrap gap-2">
           <Link 
             href="/plants"
             className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-              !searchParams.q 
-                ? 'bg-primary text-primary-foreground' 
-                : 'bg-secondary/10 text-secondary-foreground hover:bg-secondary/20'
+              !searchParams.category 
+                ? 'bg-emerald-500/10 text-emerald-400' 
+                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
             }`}
           >
             All Plants
@@ -198,21 +216,30 @@ export default async function PlantsPage({
           {categories.map((category) => (
             <Link 
               key={category.value}
-              href={`/plants?q=${category.value}`}
+              href={`/plants?category=${category.value}`}
               className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                searchParams.q === category.value 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-secondary/10 text-secondary-foreground hover:bg-secondary/20'
+                searchParams.category === category.value
+                  ? 'bg-emerald-500/10 text-emerald-400'
+                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
               }`}
             >
               {category.label}
             </Link>
           ))}
         </div>
+
+        <form className="relative">
+          <input
+            type="text"
+            name="q"
+            defaultValue={searchParams.q}
+            placeholder="Search plants..."
+            className="w-full md:w-96 px-4 py-2 rounded-md border border-gray-700 bg-gray-800/50 text-sm text-gray-200 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500/50 placeholder:text-gray-500"
+          />
+        </form>
       </div>
 
-      {/* Plant grid */}
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {plants.map((plant) => (
           <PlantCard key={plant.id} plant={plant} />
         ))}

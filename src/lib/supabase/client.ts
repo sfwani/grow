@@ -23,6 +23,7 @@ export async function getPlants() {
     description: plant.description,
     growthTime: plant.growth_time,
     difficulty: plant.difficulty as 'Easy' | 'Medium' | 'Hard',
+    category: plant.category as 'Medicinal' | 'Food',
     tags: [plant.category],
     imageUrl: plant.image_url,
     stages: {
@@ -62,6 +63,7 @@ export async function searchPlantsByCategory(category: string) {
     description: plant.description,
     growthTime: plant.growth_time,
     difficulty: plant.difficulty,
+    category: plant.category as 'Medicinal' | 'Food',
     tags: [plant.category],
     imageUrl: plant.image_url,
     stages: {
@@ -104,6 +106,7 @@ export async function getPlantById(id: string) {
     description: plant.description,
     growthTime: plant.growth_time,
     difficulty: plant.difficulty as 'Easy' | 'Medium' | 'Hard',
+    category: plant.category as 'Medicinal' | 'Food',
     tags: [plant.category],
     imageUrl: plant.image_url,
     stages: {
@@ -122,4 +125,19 @@ export async function getPlantById(id: string) {
       [plant.category.toLowerCase()]: [plant.description]
     }
   }
+}
+
+export async function createPlant(plant: any) {
+  const { data, error } = await supabase
+    .from('plants')
+    .insert([plant])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error creating plant:', error);
+    throw error;
+  }
+
+  return data;
 } 
